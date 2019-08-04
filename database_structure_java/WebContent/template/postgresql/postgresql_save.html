@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>#dbms#-#dbname#</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+    <style>
+        .overlay_block{
+            position: fixed;display: block;width: 100%;height: 100%;background-color: rgba(12, 12, 12, 0.4);
+        }
+        .overlay_hide{
+            display:none;
+        }
+        .hamburger_block{
+            margin-left: 14.5%;position: fixed;top: 0;font-size: 3rem;
+        }
+        .hamburger_hide{
+            margin-left: 0%;position: fixed;top: 0;font-size: 3rem;
+        }
+        .nav_block{
+            width: 13%;display: block;overflow: hidden;
+        }
+        .nav_hide{
+            width: 13%;display: none;
+        }
+        .nav a{
+            overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="container">
+        <div v-bind:class="menuClick%2==1?'overlay overlay_hide':'overlay overlay_block'"></div>
+
+        <nav role="navigation" class="navbar navbar-fixed-top">
+            <ul v-bind:class="menuClick%2==1?'nav sidebar-nav nav_hide':'nav sidebar-nav nav_block'">
+                <li><input type="text" class="form-control" placeholder="#search_input_placeholder#" v-on:keyup="tableName_change()" v-model.trim="search"></li>
+                <li v-for="tab in tableData">
+                    <a href="javascript:void(0);" v-on:click="tab_select(tab.tableName)">{{tab.tableName}}</a>
+                </li>
+            </ul>
+            <div v-bind:class="menuClick%2==1?'hamburger_hide':'hamburger_block'">
+                <a href="javascript:void(0);">
+                    <span v-bind:class="menuClick%2?'glyphicon glyphicon-menu-hamburger':'glyphicon glyphicon-remove'" aria-hidden="true" v-on:click="menu_click();"></span>
+                </a>
+            </div>
+        </nav>
+
+        <div>
+            <h1 style="text-align:center;">#dbms#-#dbname#</h1>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="#search_input_placeholder#" v-on:keyup="tableName_change()" v-model.trim="search">
+            </div>
+
+            <template v-for="tab in tableData">
+            <h3 class="panel-heading">{{tab.tableName}}：{{tab.tableComment}}</h3>
+            <div class="table table-hover table-bordered table-condensed">
+                <table class="table table-hover table-bordered table-condensed">
+                    <thead>
+                    <tr>
+                        <template v-for="col in tableCols">
+                            <th>{{col}}</th>
+                        </template>
+                    </tr>
+                    </thead>
+                    <tbody v-for="col in tab.colums">
+                    <tr>
+                        <th>{{ col['columnName'] }}</th>
+                        <th>{{ col['columnType'] }}</th>
+                       	<th>{{ col['columnDefault'] }}</th>
+                        <th>{{ col['isNullable'] }}</th>
+                        <th></th>
+                        <th>{{ col['columnKey']=='t' ? '√' : '' }}</th>
+                        <th>{{ col['columnComment'] }}</th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            </template>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+<script>
+    window.tableData=#tableDataJson#;
+    window.tableCols='#tableCols#'.split(',');
+    var appVue=new Vue({
+        el: '#app',
+        data: {
+            'tableData':tableData,
+            'tableCols':tableCols,
+            'search':'',
+            'menuClick':1
+        },
+        methods:{
+            tableName_change:function () {
+                var data=new Array();
+                for(var i=0;i<window.tableData.length;i++){
+                    if(window.tableData[i].tableName.search(this.search)!=-1){
+                        data.push(window.tableData[i]);
+                    }
+                }
+                this.$data.tableData=data;
+            },
+            tab_select:function(name){
+                this.search=name;
+                var data=new Array();
+                for(var i=0;i<window.tableData.length;i++){
+                    if(window.tableData[i].tableName.search(name)!=-1){
+                        data.push(window.tableData[i]);
+                    }
+                }
+                this.$data.tableData=data;
+            },
+            menu_click:function(){
+                this.menuClick++;
+            }
+        }
+    })
+</script>
+</html>

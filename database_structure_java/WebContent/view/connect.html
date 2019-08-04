@@ -1,0 +1,62 @@
+<div class="form-group">
+<ul class="nav nav-pills nav-wizard">
+    <li><a href="#language" data-toggle="tab">{{lang.steps[0]}}</a><div class="nav-arrow"></div></li>
+    <li class="active"><div class="nav-wedge"></div><a href="#connect" data-toggle="tab">{{lang.steps[1]}}</a><div class="nav-arrow"></div></li>
+    <li><div class="nav-wedge"></div><a href="javascript:void(0);" data-toggle="tab">{{lang.steps[2]}}</a><div class="nav-arrow"></div></li>
+    <li><div class="nav-wedge"></div><a href="javascript:void(0);" data-toggle="tab">{{lang.steps[3]}}</a></li>
+</ul>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="dbms" class="col-md-3 control-label">{{lang.connect_form.type_lbl}}:</label>
+                <div class="col-md-5">
+                    <select id="dbms" name="dbms" class="form-control">
+                        <% for(var i=0;i<support_database.length;i++){%>
+                        <option value="{{support_database[i]}}" {{if (db.dbms==support_database[i]) }} selected {{/if}} >{{support_database[i]}}</option>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="host" class="col-md-3 control-label">{{lang.connect_form.host_lbl}}:</label>
+                <div class="col-md-5">
+                    <input type="text" name="host" id="host" class="form-control" value="{{db.host}}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="port" class="col-md-3 control-label">{{lang.connect_form.port_lbl}}:</label>
+                <div class="col-md-5">
+                    <input type="text" name="port" id="port" class="form-control" value="{{db.port}}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dbname" class="col-md-3 control-label">{{lang.connect_form.db_lbl}}:</label>
+                <div class="col-md-5">
+                    <input type="text" name="dbname" id="dbname" class="form-control" value="{{db.dbname}}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="user" class="col-md-3 control-label">{{lang.connect_form.uname_lbl}}:</label>
+                <div class="col-md-5">
+                    <input type="text" name="user" id="user" class="form-control" value="{{db.user}}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="pass" class="col-md-3 control-label">{{lang.connect_form.pwd_lbl}}:</label>
+                <div class="col-md-5">
+                    <input type="text" name="pass" id="pass" class="form-control" value="{{db.pass}}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label"></label>
+                <div class="col-md-5">
+                    <input type="button" class="btn btn-default" value="{{lang.connect_form.test_lbl}}" onclick="test_connect();" />
+                &nbsp;&nbsp;  <input type="button" class="btn btn-default" value="{{lang.connect_form.con_lbl}}" onclick="get_tables();" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+<div class="form-group">
+    <ul class="nav nav-pills nav-wizard">
+        <li><a href="#language" data-toggle="tab">{{lang.steps[0]}}</a><div class="nav-arrow"></div></li>
+        <li><div class="nav-wedge"></div><a href="#connect" data-toggle="tab">{{lang.steps[1]}}</a><div class="nav-arrow"></div></li>
+        <li><div class="nav-wedge"></div><a href="#table" data-toggle="tab">{{lang.steps[2]}}</a><div class="nav-arrow"></div></li>
+        <li class="active"><div class="nav-wedge"></div><a href="#generation" data-toggle="tab">{{lang.steps[3]}}</a></li>
+    </ul>
+</div>
+
+<div class="form-group">
+    <input type="text" class="form-control" id="tableName" placeholder="{{lang.generation_form.search_input_placeholder}}" onchange="tableName_change(this);" value="{{form.tableName}}">
+</div>
+
+<% for(var i=0;i<data.length;i++){
+    var tab=data[i];
+%>
+<h3 class="panel-heading">{{tab.table_name}}：{{tab.table_comment}}</h3>
+<div class="table table-hover table-bordered table-condensed">
+    <table class="table table-hover table-bordered table-condensed">
+    <thead>
+        <tr>
+            <% var pvcols=lang.generation_form.pvcols;
+            for(var j=0;j<pvcols.length;j++){
+            %>
+            <th>{{pvcols[j]}}</th>
+            <% } %>
+        </tr>
+    </thead>
+    <tbody id="tbody">
+    <% var cols=tab.colums;
+    for(var j=0;j<cols.length;j++){
+        var col=cols[j];
+    %>
+    <tr>
+        <th>{{ col['column_name'] }}</th>
+        <th>{{ col['column_type'] }}</th>
+        <th>{{ col['column_default'] }}</th>
+        <th>{{ col['is_nullable'] }}</th>
+        <th>{{ col['extra']=='auto_increment' ? '√' : ''}} </th>
+        <th>{{ col['column_key']=='PRI' ? '√' : '' }}</th>
+        <th>{{ col['column_comment'] }}</th>
+    </tr>
+    <% } %>
+    </tbody>
+</table>
+</div>
+<% }
+if(data.length>0){
+%>
+<form action="php/fun.php" method="post" target="_blank">
+    <input type="hidden" name="method" value="save_html" />
+    <input type="hidden" name="dbms" value="{{formData.dbms}}" />
+    <input type="hidden" name="host" value="{{formData.host}}" />
+    <input type="hidden" name="port" value="{{formData.port}}" />
+    <input type="hidden" name="dbname" value="{{formData.dbname}}" />
+    <input type="hidden" name="user" value="{{formData.user}}" />
+    <input type="hidden" name="pass" value="{{formData.pass}}" />
+    <input type="hidden" name="tb" value="{{formData.tb}}" />
+    <input type="hidden" name="cols" value="{{lang.generation_form.pvcols.toString()}}" />
+    <input type="hidden" name="search_input_placeholder" value="{{lang.generation_form.search_input_placeholder}}" />
+    <input type="submit" value="{{lang.generation_form.save_as}}" class="btn btn-default" />
+</form>
+<% } %>
+<script>
+    //表名搜索筛选
+    function tableName_change(elem){
+        elem.value=$.trim(elem.value);
+        var url="template/mysql/mysql_generation.html?tmp="+time_stamp();
+        $.get(url, function(temp){
+            var form={'tableName':elem.value};
+            var json=JSON.parse(localStorage.getItem(struct_data_storage_key+"generation"));
+            var formData={'dbms':window.dbms,'host':window.host,'port':window.port,'dbname':window.dbname,"user":window.user,"pass":window.pass,'tb':window.tb};
+            var data=new Array();
+            for(var i=0;i<json.data.length;i++){
+                if(json.data[i].table_name.search(elem.value)!=-1){
+                    data.push(json.data[i]);
+                }
+            }
+            var html = template.render(temp, {'data': data,'formData':formData,'lang':lang,'form':form});
+            $("#container").html(html);
+        });
+
+    }
+</script>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+    <link href="common.css" rel="stylesheet">
+</head>
+<body>
+<div class="container" id="container">
+</div>
+</body>
+<script src="jquery-1.11.0.min.js"></script>
+<script src="template-web-4.13.2.js"></script>
+<script src="common.js"></script>
+<script type="text/javascript">
+    $(function($) {
+        //获取浏览器的语言
+        window.lang=localStorage.getItem(struct_data_storage_key+"lang");
+        if(window.lang==null){
+            var get_lang=navigator.language.toLocaleLowerCase();
+            var is_find=false;
+            for(var i=0;i<i18ns.length;i++){
+                if(i18ns[i]==get_lang){
+                    is_find=true;
+                    break;
+                }
+            }
+            if(is_find){
+                $.getScript("i18n/"+get_lang+".js", function(){
+                    $("title").html(window.lang.title);
+                    hash_switch(location.hash);
+                });
+            }else{
+                $.getScript("i18n/"+i18ns[0]+".js", function(){
+                    $("title").html(window.lang.title);
+                    hash_switch(location.hash);
+                });
+            }
+        }else{
+            window.lang=JSON.parse(lang);
+            hash_switch(location.hash);
+        }
+        //监听地址栏改变事件
+        $(window).on("hashchange", function() {
+            hash_switch(location.hash);
+        });
+    });
+</script>
+</html>

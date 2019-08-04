@@ -1,0 +1,57 @@
+<div class="form-group">
+    <ul class="nav nav-pills nav-wizard">
+        <li><a href="#language" data-toggle="tab">{{lang.steps[0]}}</a><div class="nav-arrow"></div></li>
+        <li><div class="nav-wedge"></div><a href="#connect" data-toggle="tab">{{lang.steps[1]}}</a><div class="nav-arrow"></div></li>
+        <li class="active"><div class="nav-wedge"></div><a href="#table" data-toggle="tab">{{lang.steps[2]}}</a><div class="nav-arrow"></div></li>
+        <li><div class="nav-wedge"></div><a href="javascript:void(0);" data-toggle="tab">{{lang.steps[3]}}</a></li>
+    </ul>
+</div>
+
+<div class="form-group">
+    <input type="text" class="form-control" id="tableName" placeholder="{{lang.generation_form.search_input_placeholder}}" onchange="tableName_change(this);" value="{{form.tableName}}">
+</div>
+
+<div class="panel panel-default">
+<table id="table" class="table table-striped table-bordered">
+<thead>
+<tr>
+    <th><label><input id="checkAll" onclick="checkAllOpt();" type="checkbox" /></label>
+    <th>{{lang.tables_form.pvcols[0]}}</th>
+    <th>{{lang.tables_form.pvcols[1]}}</th>
+</tr>
+</thead>
+<tbody>
+<% for(var i=0;i<data.length;i++){
+    var tab=data[i];
+%>
+    <tr>
+        <th><input type="checkbox" name="tb" value="{{tab.table_name}}" onclick="checkOpt(this);" /></th>
+        <th>{{tab.table_name}}</th>
+        <th>{{tab.table_comment}}</th>
+    </tr>
+<% } %>
+</tbody>
+<tfoot>
+<tr><td colspan="3"><input type="button" class="btn btn-default" value="{{lang.tables_form.create_btn}}" onclick="get_generation();" /></td></tr>
+</tfoot>
+</table>
+</div>
+<script>
+    //表名搜索筛选
+    function tableName_change(elem){
+        elem.value=$.trim(elem.value);
+        var url="template/mysql/mysql_tables.html?tmp="+time_stamp();
+        $.get(url, function(temp){
+            var form={'tableName':elem.value};
+            var json=JSON.parse(localStorage.getItem(struct_data_storage_key+"tables"));
+            var data=new Array();
+            for(var i=0;i<json.data.length;i++){
+                if(json.data[i].table_name.search(elem.value)!=-1){
+                    data.push(json.data[i]);
+                }
+            }
+            var html = template.render(temp, {'data': data,'lang':lang,'form':form});
+            $("#container").html(html);
+        });
+    }
+</script>

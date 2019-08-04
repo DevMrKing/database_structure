@@ -1,0 +1,35 @@
+<div class="form-group">
+<ul class="nav nav-pills nav-wizard">
+    <li class="active"><a href="#language" data-toggle="tab">{{lang.steps[0]}}</a><div class="nav-arrow"></div></li>
+    <li><div class="nav-wedge"></div><a href="javascript:void(0);" data-toggle="tab">{{lang.steps[1]}}</a><div class="nav-arrow"></div></li>
+    <li><div class="nav-wedge"></div><a href="javascript:void(0);" data-toggle="tab">{{lang.steps[2]}}</a><div class="nav-arrow"></div></li>
+    <li><div class="nav-wedge"></div><a href="javascript:void(0);" data-toggle="tab">{{lang.steps[3]}}</a></li>
+</ul>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h1 class="text-center">{{lang.language}}</h1>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <select class="form-control" id="language">
+                        <% for(var i=0;i<lang_arr.length;i++){%>
+                        <option value="{{lang_arr[i].key}}">{{lang_arr[i].val}}</option>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <center>
+                    <button type="button" class="btn btn-default btn-sm" aria-label="Left Align" onclick="lang_next()">
+                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                    </button>
+                </center>
+            </div>
+        </form>
+    </div>
+</div>
