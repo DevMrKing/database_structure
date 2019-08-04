@@ -1,0 +1,3 @@
+*.js linguist-language=java csharp php
+*.css linguist-language=java csharp php  
+*.html linguist-language=java csharp php
