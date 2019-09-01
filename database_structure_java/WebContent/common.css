@@ -1,8 +1,60 @@
+@media screen and (min-width: 1px)and (max-width: 550px){
+.none{display:none;}
+.menu-dialog{
+  position:fixed;
+  z-index:1;
+  height:100%;
+  background-color: rgba(0,0,0,.4);
+  margin:0px;
+  padding:0px;
+  border:0px;
+  left:0px;
+}
+.menu-dialog button{
+  position: fixed;
+  right: 1.3rem;
+}
+.menu-dialog .remove-container{
+  font-size: 3rem;
+  position: fixed;
+  bottom: 1rem;
+  width: 100%;
+}
+.nav-pills{
+  padding:0px;
+  border:0px;
+  margin:0px;
+}
+.nav-pills > li + li{
+  margin-left: 0px;
+}
+.nav-pills li{
+  width: 100%;
+  padding:0px;
+  border:0px;
+  margin:0px;
+  border:1px solid #ddd;
+  background-color:white;
+}
+.nav-pills li a{
+  border-radius:0px;
+}
+.nav-wedge,.nav-arrow{display:none;}
+}
+
+@media screen and (min-width: 551px){
+.menu-btn{
+	display:none;
+}
+.menu-dialog button{display:none;}
+.menu-dialog .remove-container{
+  display:none;
+}
 .nav-pills.nav-wizard > li {
   position: relative;
   overflow: visible;
-  border-right: 15px solid transparent;
-  border-left: 15px solid transparent;
+  border-right: 1.5rem solid transparent;
+  border-left: 1.5rem solid transparent;
 }
 .nav-pills.nav-wizard > li + li {
   margin-left: 0;
@@ -43,7 +95,6 @@
   border-style: solid;
   border-width: 20px 0 20px 20px;
   border-color: #eee #eee #eee transparent;
-  z-index: 150;
 }
 .nav-pills.nav-wizard > li:hover .nav-arrow {
   border-color: transparent transparent transparent #aaa;
@@ -63,4 +114,5 @@
 }
 .nav-pills.nav-wizard > li.active a {
   background-color: #428bca;
+}
 }

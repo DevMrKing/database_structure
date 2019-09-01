@@ -37,6 +37,7 @@ function jqueryAjax(url,settings){
 //地址栏的hash监听转换
 function hash_switch(hash){
     get_database_var();
+    menuBind();
     if(hash=="#language" || hash==""){
         //选择语言页面
         lang_html();
@@ -285,6 +286,29 @@ function get_database_var(){
     window.user=localStorage.getItem(struct_data_storage_key+"user");
     window.pass=localStorage.getItem(struct_data_storage_key+"pass");
     window.tb=localStorage.getItem(struct_data_storage_key+"tb");
+}
+
+//菜单绑定
+function menuBind(){
+    //定时检查，然后动态取消定时任务
+    var menuInterval=setInterval(function(){
+        if(document.querySelector(".menu-btn")){
+            //点击切换显示菜单
+            $(".menu-btn").click(function(){
+                $(".menu-dialog").removeClass("none");
+                $(".menu-btn").parent(".form-group").addClass("none");
+            });
+            clearInterval(menuInterval);
+        }
+        if(document.querySelector(".menu-dialog")){
+            //隐藏菜单
+            $(".glyphicon-remove").click(function(){
+                $(".menu-dialog").addClass("none");
+                $(".menu-btn").parent(".form-group").removeClass("none");
+            });
+            clearInterval(menuInterval);
+        }
+    },100);
 }
 
 //创建时间戳
